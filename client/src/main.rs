@@ -1,21 +1,14 @@
-#![feature(macro_rules)]
-#![feature(phase)]
-#[phase(plugin, link)] extern crate log;
 
-extern crate syntax;
-extern crate collections;
-extern crate core;
+extern crate libracer;
 
 #[cfg(not(test))]
-use racer::Match;
+use libracer::Match;
 #[cfg(not(test))]
-use racer::util::getline;
+use libracer::util::getline;
 #[cfg(not(test))]
-use racer::nameres::{do_file_search, do_external_search};
+use libracer::nameres::{do_file_search, do_external_search};
 #[cfg(not(test))]
-use racer::scopes;
-
-pub mod racer;
+use libracer::scopes;
 
 #[cfg(not(test))]
 fn match_fn(m:Match) {
@@ -41,13 +34,13 @@ fn complete() {
             let charnum = std::str::from_str(std::os::args().as_slice()[3].as_slice()).unwrap();
             let fname = args.as_slice()[4].as_slice();
             let fpath = Path::new(fname);
-            let src = racer::load_file(&fpath);
+            let src = libracer::load_file(&fpath);
             let line = getline(&fpath, linenum);
-            let (start, pos) = racer::util::expand_ident(line.as_slice(), charnum);
+            let (start, pos) = libracer::util::expand_ident(line.as_slice(), charnum);
             println!("PREFIX {},{},{}", start, pos, line.as_slice().slice(start, pos));
 
             let point = scopes::coords_to_point(&*src, linenum, charnum);
-            for m in racer::complete_from_file(&*src, &fpath, point) {
+            for m in libracer::complete_from_file(&*src, &fpath, point) {
                 match_fn(m);
             }
         }
@@ -61,7 +54,7 @@ fn complete() {
                 if p.len() == 1 {
                     match_fn(m);
                 } else {
-                    for m in do_external_search(p.slice_from(1), &m.filepath, m.point, racer::SearchType::StartsWith, racer::Namespace::BothNamespaces) {
+                    for m in do_external_search(p.slice_from(1), &m.filepath, m.point, libracer::SearchType::StartsWith, libracer::Namespace::BothNamespaces) {
                         match_fn(m);
                     }
                 }
@@ -81,7 +74,7 @@ fn prefix() {
     // print the start, end, and the identifier prefix being matched
     let path = Path::new(fname);
     let line = getline(&path, linenum);
-    let (start, pos) = racer::util::expand_ident(line.as_slice(), charnum);
+    let (start, pos) = libracer::util::expand_ident(line.as_slice(), charnum);
     println!("PREFIX {},{},{}", start, pos, line.as_slice().slice(start, pos));
 }
 
@@ -93,10 +86,10 @@ fn find_definition() {
     let charnum = std::str::from_str(args[3].as_slice()).unwrap();
     let fname = args[4].as_slice();
     let fpath = Path::new(fname);
-    let src = racer::load_file(&fpath);
+    let src = libracer::load_file(&fpath);
     let pos = scopes::coords_to_point(&*src, linenum, charnum);
 
-    racer::find_definition(&*src, &fpath, pos).map(match_fn);
+    libracer::find_definition(&*src, &fpath, pos).map(match_fn);
 }
 
 #[cfg(not(test))]

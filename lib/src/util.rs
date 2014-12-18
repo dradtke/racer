@@ -1,7 +1,7 @@
 // Small functions of utility
 use std::io::{File, BufferedReader};
-use racer::{SearchType};
-use racer::SearchType::{ExactMatch, StartsWith};
+use super::{SearchType};
+use super::SearchType::{ExactMatch, StartsWith};
 use std;
 
 pub fn getline(filepath : &Path, linenum : uint) -> String {

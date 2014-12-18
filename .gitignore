@@ -4,3 +4,7 @@ bin
 src/scopes
 !.travis.yml
 *tmpfile*
+lib/target
+lib/Cargo.lock
+client/target
+client/Cargo.lock

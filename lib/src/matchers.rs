@@ -1,18 +1,17 @@
 use std::cell::{Cell};
 use std::{iter,option};
 use collections::vec;
-use racer::nameres::resolve_path;
-use racer::scopes;
-use racer::util::{symbol_matches, txt_matches, find_ident_end};
-use racer::nameres::{get_module_file, get_crate_file};
-use racer::typeinf;
-use racer;
-use racer::{ast};
-use racer::{SearchType, Match, PathSegment};
-use racer::SearchType::{StartsWith, ExactMatch};
-use racer::MatchType::{Let, Module, Function, Struct, Type, Trait, Enum, EnumVariant, Const, Static};
-use racer::Namespace::BothNamespaces;
-use racer::util;
+use super::nameres::resolve_path;
+use super::scopes;
+use super::util::{symbol_matches, txt_matches, find_ident_end};
+use super::nameres::{get_module_file, get_crate_file};
+use super::typeinf;
+use super::{ast};
+use super::{SearchType, Match, PathSegment};
+use super::SearchType::{StartsWith, ExactMatch};
+use super::MatchType::{Let, Module, Function, Struct, Type, Trait, Enum, EnumVariant, Const, Static};
+use super::Namespace::BothNamespaces;
+use super::util;
 
 
 // Should I return a boxed trait object to make this signature nicer?
@@ -40,7 +39,7 @@ pub fn match_types(src: &str, blobstart: uint, blobend: uint,
 
 pub fn match_values(src: &str, blobstart: uint, blobend: uint, 
                   searchstr: &str, filepath: &Path, search_type: SearchType, 
-                  local: bool) -> iter::Chain<iter::Chain<iter::Chain<iter::Chain<option::Item<racer::Match>, option::Item<racer::Match>>, vec::MoveItems<racer::Match>>, option::Item<racer::Match>>, vec::MoveItems<racer::Match>> {
+                  local: bool) -> iter::Chain<iter::Chain<iter::Chain<iter::Chain<option::Item<super::Match>, option::Item<super::Match>>, vec::MoveItems<super::Match>>, option::Item<super::Match>>, vec::MoveItems<super::Match>> {
     let it = match_const(src, blobstart, blobend, searchstr, filepath, search_type, local).into_iter();
     let it = it.chain(match_static(src, blobstart, blobend, searchstr, filepath, search_type, local).into_iter());
     let it = it.chain(match_let(src, blobstart, blobend, searchstr, filepath, search_type, local).into_iter());
@@ -193,7 +192,7 @@ pub fn match_extern_crate(msrc: &str, blobstart: uint, blobend: uint,
             // real crate name (e.g. extern crate collections_core = "collections")
             // so we need to get the source text without scrubbed strings 
 
-            let rawsrc = racer::load_file(filepath);
+            let rawsrc = super::load_file(filepath);
             let rawblob = rawsrc.slice(blobstart,blobend);
             debug!("found an extern crate (unscrubbed): |{}|", rawblob);
             
@@ -632,7 +631,7 @@ pub fn match_use(msrc: &str, blobstart: uint, blobend: uint,
     return out;
 }
 
-fn hack_remove_self_and_super_in_modpaths(mut path: racer::Path) -> racer::Path {
+fn hack_remove_self_and_super_in_modpaths(mut path: super::Path) -> super::Path {
     if path.segments[0].name.as_slice() == "self" {
         path.segments.remove(0);
     }

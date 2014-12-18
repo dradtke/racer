@@ -1,3 +1,11 @@
+#![feature(macro_rules)]
+#![feature(phase)]
+#[phase(plugin, link)] extern crate log;
+
+extern crate syntax;
+extern crate collections;
+extern crate core;
+
 use std::io::File;
 use std::io::BufferedReader;
 use std::{str,vec,fmt,path};

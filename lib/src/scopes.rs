@@ -1,12 +1,11 @@
 use std::io::File;
 use std::io::BufferedReader;
 
-use racer;
-use racer::util;
-use racer::codecleaner;
-use racer::codeiter;
-use racer::typeinf;
-use racer::ast;
+use super::util;
+use super::codecleaner;
+use super::codeiter;
+use super::typeinf;
+use super::ast;
 
 pub fn find_closing_paren(src:&str, mut pos:uint) -> uint {
     let openparen: u8 = "(".as_bytes()[0] as u8;
@@ -125,7 +124,7 @@ fn finds_subnested_module() {
 }
 
 
-pub fn split_into_context_and_completion<'a>(s: &'a str) -> (&'a str, &'a str, racer::CompletionType) {
+pub fn split_into_context_and_completion<'a>(s: &'a str) -> (&'a str, &'a str, super::CompletionType) {
 
     let mut start = 0;
     let s_bytes = s.as_bytes();
@@ -140,14 +139,14 @@ pub fn split_into_context_and_completion<'a>(s: &'a str) -> (&'a str, &'a str, r
     }
 
     if start != 0 && s_bytes[start-1] == dot {    // field completion
-        return (s.slice_to(start-1), s.slice_from(start), racer::CompletionType::CompleteField);
+        return (s.slice_to(start-1), s.slice_from(start), super::CompletionType::CompleteField);
     }
 
     if start > 0 && s_bytes[start-1] == colon {  // path completion
-        return (s.slice_to(start-2), s.slice_from(start), racer::CompletionType::CompletePath);
+        return (s.slice_to(start-2), s.slice_from(start), super::CompletionType::CompletePath);
     }
 
-    return (s.slice_to(start), s.slice_from(start), racer::CompletionType::CompletePath);
+    return (s.slice_to(start), s.slice_from(start), super::CompletionType::CompletePath);
 }
 
 pub fn get_start_of_search_expr(msrc: &str, point: uint) -> uint {

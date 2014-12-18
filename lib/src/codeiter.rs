@@ -1,7 +1,7 @@
 // #![feature(phase)]
 // #[phase(plugin, link)] extern crate log;
 
-use racer::codecleaner::{code_chunks,CodeIndicesIter};
+use super::codecleaner::{code_chunks,CodeIndicesIter};
 // use codecleaner::{code_chunks,CodeIndicesIter};
 // mod codecleaner;
 

@@ -6,3 +6,6 @@ authors = []
 [[bin]]
 name = "racer"
 path = "src/main.rs"
+
+[dependencies.libracer]
+path = "../lib"
